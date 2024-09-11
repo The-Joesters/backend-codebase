@@ -15,11 +15,18 @@ const swaggerDefinition = {
       description: 'Local server',
     },
   ],
+  securitySchemes: {
+    bearerAuth: {
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+    },
+  },
 };
 
 const options = {
   swaggerDefinition,
-  apis: ['./src/routes/*.ts', './src/controllers/*.ts'], // Ensure these paths are correct
+  apis: ['./src/docs/routesDoc/*js', './src/controllers/*.ts'], // Ensure these paths are correct
 };
 
 const swaggerSpec = swaggerJSDoc(options);
