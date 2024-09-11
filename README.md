@@ -28,6 +28,18 @@ This is the backend for the **Reading Sphere** application. Our main goal is to 
     npm start
     ```
 
+### API Documentation
+
+- **Swagger UI**: You can access the API documentation at:
+
+    ```bash
+    http://localhost:3000/api-docs
+    ```
+
+    This page provides interactive documentation of the API endpoints and allows you to test them.
+
 ### Additional Information
 
 - **Configuration**: Ensure you have a `.env` file for environment variables.
+
+- **Test API**: Note that there is a test API included in the Swagger documentation. This endpoint is not functional yet, but it is present for future testing and development purposes.
