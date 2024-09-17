@@ -228,6 +228,7 @@ model users {
   book_section_progress     book_section_progress[]
   bookmarked_books          bookmarked_books[]
   books                     books[]
+  character_images          character_images[]
   inventory                 inventory[]
   subscriptions             subscriptions[]
   user_badges               user_badges[]
@@ -242,4 +243,13 @@ model character {
   name        String? @db.VarChar(255)
   description String? @db.Text
   users       users[]
+}
+
+model character_images {
+  id           Int     @id
+  character_id Int?
+  image_link   String? @db.VarChar(255)
+  users        users?  @relation(fields: [character_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "character_images_ibfk_1")
+
+  @@index([character_id], map: "character_id")
 }
