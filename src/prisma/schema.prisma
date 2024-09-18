@@ -8,101 +8,101 @@ datasource db {
 }
 
 model article_ratings {
-  id         Int       @id
-  user_id    Int?
-  article_id Int?
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  article_id Int
   rating     Int?
-  review     String?   @db.Text
-  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_ratings_ibfk_1")
-  articles   articles? @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_ratings_ibfk_2")
+  review     String?  @db.Text
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "article_ratings_ibfk_1")
+  articles   articles @relation(fields: [article_id], references: [id], onUpdate: Restrict, map: "article_ratings_ibfk_2")
 
   @@index([article_id], map: "article_id")
   @@index([user_id], map: "user_id")
 }
 
 model article_reading_progress {
-  id           Int       @id
-  article_id   Int?
-  user_id      Int?
+  id           Int      @id @default(autoincrement())
+  article_id   Int
+  user_id      Int
   is_completed Boolean?
-  articles     articles? @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_reading_progress_ibfk_1")
-  users        users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_reading_progress_ibfk_2")
+  articles     articles @relation(fields: [article_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_1")
+  users        users    @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_2")
 
   @@index([article_id], map: "article_id")
   @@index([user_id], map: "user_id")
 }
 
 model articles {
-  id                       Int                        @id
-  title                    String?                    @db.VarChar(255)
-  article_link             String?                    @db.Text
+  id                       Int                        @id @default(autoincrement())
+  title                    String                     @db.VarChar(255)
+  article_link             String                     @db.MediumText
   category_id              Int?
   summary                  String?                    @db.Text
   uploaded_by_user_id      Int?
   is_public                Boolean?                   @default(true)
   article_ratings          article_ratings[]
   article_reading_progress article_reading_progress[]
-  book_categories          book_categories?           @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "articles_ibfk_1")
-  users                    users?                     @relation(fields: [uploaded_by_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "articles_ibfk_2")
+  book_categories          book_categories?           @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "articles_ibfk_1")
+  users                    users?                     @relation(fields: [uploaded_by_user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "articles_ibfk_2")
 
   @@index([category_id], map: "category_id")
   @@index([uploaded_by_user_id], map: "uploaded_by_user_id")
 }
 
 model badges {
-  id             Int           @id
-  name           String?       @db.VarChar(255)
-  description    String?       @db.Text
-  criteria_value Int?
+  id             Int           @id @default(autoincrement())
+  name           String        @db.VarChar(255)
+  description    String        @db.Text
+  criteria_value Int
   badge_image    String?       @db.Text
   user_badges    user_badges[]
 }
 
 model book_categories {
-  id                        Int                         @id
-  name                      String?                     @unique(map: "name") @db.VarChar(255)
+  id                        Int                         @id @default(autoincrement())
+  categoryName              String                      @unique(map: "categoryName_UNIQUE") @db.VarChar(255)
   articles                  articles[]
   books                     books[]
   user_preferred_categories user_preferred_categories[]
 }
 
 model book_progress {
-  id                    Int      @id
-  user_id               Int?
-  book_id               Int?
+  id                    Int      @id @default(autoincrement())
+  user_id               Int
+  book_id               Int
   sections_total_number Int?
   sections_completed    Int?
   percentage            Int?
   is_completed          Boolean?
-  users                 users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_progress_ibfk_1")
-  books                 books?   @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_progress_ibfk_2")
+  users                 users    @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "book_progress_ibfk_1")
+  books                 books    @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_progress_ibfk_2")
 
   @@index([book_id], map: "book_id")
   @@index([user_id], map: "user_id")
 }
 
 model book_ratings {
-  id      Int     @id
-  user_id Int?
-  book_id Int?
+  id      Int     @id @default(autoincrement())
+  user_id Int
+  book_id Int
   rating  Int?
   review  String? @db.Text
-  users   users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_ratings_ibfk_1")
-  books   books?  @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_ratings_ibfk_2")
+  users   users   @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "book_ratings_ibfk_1")
+  books   books   @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_ratings_ibfk_2")
 
   @@index([book_id], map: "book_id")
   @@index([user_id], map: "user_id")
 }
 
 model book_section_progress {
-  id            Int            @id
-  book_id       Int?
-  user_id       Int?
+  id            Int            @id @default(autoincrement())
+  book_id       Int
+  user_id       Int
   section_id    Int?
   is_completed  Boolean?
-  books         books?         @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_section_progress_ibfk_1")
-  users         users?         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_section_progress_ibfk_2")
-  book_sections book_sections? @relation(fields: [section_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_section_progress_ibfk_3")
+  books         books          @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_section_progress_ibfk_1")
+  users         users          @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "book_section_progress_ibfk_2")
+  book_sections book_sections? @relation(fields: [section_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "book_section_progress_ibfk_3")
 
   @@index([book_id], map: "book_id")
   @@index([section_id], map: "section_id")
@@ -110,36 +110,36 @@ model book_section_progress {
 }
 
 model book_sections {
-  id                    Int                     @id
-  book_id               Int?
+  id                    Int                     @id @default(autoincrement())
+  book_id               Int
   section_number        Int?
   content               String?                 @db.Text
   estimated_time        Int?
   book_section_progress book_section_progress[]
-  books                 books?                  @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_sections_ibfk_1")
+  books                 books                   @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_sections_ibfk_1")
 
   @@index([book_id], map: "book_id")
 }
 
 model bookmarked_books {
-  id      Int    @id
-  user_id Int?
-  book_id Int?
-  users   users? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bookmarked_books_ibfk_1")
-  books   books? @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bookmarked_books_ibfk_2")
+  id      Int   @id @default(autoincrement())
+  user_id Int
+  book_id Int
+  users   users @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "bookmarked_books_ibfk_1")
+  books   books @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "bookmarked_books_ibfk_2")
 
   @@index([book_id], map: "book_id")
   @@index([user_id], map: "user_id")
 }
 
 model books {
-  id                    Int                     @id
-  title                 String?                 @db.VarChar(255)
+  id                    Int                     @id @default(autoincrement())
+  title                 String                  @db.VarChar(255)
   category_id           Int?
-  summary               String?                 @db.Text
+  summary               String                  @db.Text
   audio_path            String?                 @db.Text
   audio_length          String?                 @db.VarChar(255)
-  section_count         Int?
+  section_count         Int
   uploaded_by_user_id   Int?
   is_public             Boolean?                @default(true)
   question              String?                 @db.Text
@@ -149,74 +149,74 @@ model books {
   book_section_progress book_section_progress[]
   book_sections         book_sections[]
   bookmarked_books      bookmarked_books[]
-  book_categories       book_categories?        @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "books_ibfk_1")
-  users                 users?                  @relation(fields: [uploaded_by_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "books_ibfk_2")
+  book_categories       book_categories?        @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "books_ibfk_1")
+  users                 users?                  @relation(fields: [uploaded_by_user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "books_ibfk_2")
 
   @@index([category_id], map: "category_id")
   @@index([uploaded_by_user_id], map: "uploaded_by_user_id")
 }
 
 model customization_items {
-  id          Int         @id
-  name        String?     @db.VarChar(255)
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(255)
   description String?     @db.Text
-  price       Int?
+  price       Int
   item_image  String?     @db.Text
   inventory   inventory[]
 }
 
 model inventory {
-  id                  Int                  @id
-  user_id             Int?
-  item_id             Int?
-  users               users?               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_1")
-  customization_items customization_items? @relation(fields: [item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_2")
+  id                  Int                 @id @default(autoincrement())
+  user_id             Int
+  item_id             Int
+  users               users               @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "inventory_ibfk_1")
+  customization_items customization_items @relation(fields: [item_id], references: [id], onUpdate: Restrict, map: "inventory_ibfk_2")
 
   @@index([item_id], map: "item_id")
   @@index([user_id], map: "user_id")
 }
 
 model subscriptions {
-  id         Int       @id
+  id         Int       @id @default(autoincrement())
   user_id    Int?
   plan_type  String?   @db.VarChar(255)
   start_date DateTime? @db.Timestamp(0)
   end_date   DateTime? @db.Timestamp(0)
-  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "subscriptions_ibfk_1")
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "subscriptions_ibfk_1")
 
   @@index([user_id], map: "user_id")
 }
 
 model user_badges {
-  id       Int     @id
-  user_id  Int?
-  badge_id Int?
-  users    users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_badges_ibfk_1")
-  badges   badges? @relation(fields: [badge_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_badges_ibfk_2")
+  id       Int    @id @default(autoincrement())
+  user_id  Int
+  badge_id Int
+  users    users  @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "user_badges_ibfk_1")
+  badges   badges @relation(fields: [badge_id], references: [id], onUpdate: Restrict, map: "user_badges_ibfk_2")
 
   @@index([badge_id], map: "badge_id")
   @@index([user_id], map: "user_id")
 }
 
 model user_preferred_categories {
-  id              Int              @id
+  id              Int              @id @default(autoincrement())
   user_id         Int?
   category_id     Int?
-  users           users?           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_preferred_categories_ibfk_1")
-  book_categories book_categories? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_preferred_categories_ibfk_2")
+  users           users?           @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_preferred_categories_ibfk_1")
+  book_categories book_categories? @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_preferred_categories_ibfk_2")
 
   @@index([category_id], map: "category_id")
   @@index([user_id], map: "user_id")
 }
 
 model users {
-  id                        Int                         @id
-  name                      String?                     @db.VarChar(255)
-  email                     String?                     @unique(map: "email") @db.VarChar(255)
-  password                  String?                     @db.VarChar(255)
+  id                        Int                         @id @default(autoincrement())
+  name                      String                      @db.VarChar(255)
+  email                     String                      @unique(map: "email") @db.VarChar(255)
+  password                  String                      @db.VarChar(255)
   phone                     String?                     @db.VarChar(255)
   streak_count              Int?                        @default(0)
-  level                     Int?                        @default(0)
+  level                     Int?                        @default(1)
   total_points              Int?                        @default(0)
   character_id              Int?
   created_at                DateTime?                   @db.Timestamp(0)
@@ -228,28 +228,16 @@ model users {
   book_section_progress     book_section_progress[]
   bookmarked_books          bookmarked_books[]
   books                     books[]
-  character_images          character_images[]
   inventory                 inventory[]
   subscriptions             subscriptions[]
   user_badges               user_badges[]
   user_preferred_categories user_preferred_categories[]
-  customization_items       character?                  @relation(fields: [character_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_ibfk_1")
 
   @@index([character_id], map: "character_id")
 }
 
 model character {
-  id          Int     @id
-  name        String? @db.VarChar(255)
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
   description String? @db.Text
-  users       users[]
-}
-
-model character_images {
-  id           Int     @id
-  character_id Int?
-  image_link   String? @db.VarChar(255)
-  users        users?  @relation(fields: [character_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "character_images_ibfk_1")
-
-  @@index([character_id], map: "character_id")
 }
