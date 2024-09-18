@@ -8,11 +8,14 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
     const { id, name, email, password, phone } = req.body;
     try {
         //create new user
+        const hashedPassword = await bcrypt.hash(password, 15);
+        console.log(hashedPassword);
         const newUser = await prisma.users.create({
             data: {
                 id,
                 name,
                 email,
+                password: hashedPassword,
                 phone,
                 password,
             }
