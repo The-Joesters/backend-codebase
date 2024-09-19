@@ -220,6 +220,7 @@ model users {
   total_points              Int?                        @default(0)
   character_id              Int?
   created_at                DateTime?                   @db.Timestamp(0)
+  resetCode                 String?                     @db.VarChar(255)
   article_ratings           article_ratings[]
   article_reading_progress  article_reading_progress[]
   articles                  articles[]
