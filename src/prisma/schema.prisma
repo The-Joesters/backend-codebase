@@ -213,7 +213,7 @@ model users {
   id                        Int                         @id @default(autoincrement())
   name                      String                      @db.VarChar(255)
   email                     String                      @unique(map: "email") @db.VarChar(255)
-  password                  String                      @db.VarChar(255)
+  password                  String?                     @db.VarChar(255)
   phone                     String?                     @db.VarChar(255)
   streak_count              Int?                        @default(0)
   level                     Int?                        @default(1)
