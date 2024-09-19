@@ -1,7 +1,7 @@
 import express from 'express';
 import { getAll, getOne, createOne, updateOne, deleteOne } from '../utils/crudUtils';
 import { forgotPassword, login, signUp, verifyResetCode } from '../controllers/userController';
-import { createUserValidator } from '../utils/vaildation/userValidation';
+import { createUserValidator, loginValidator } from '../utils/vaildation/userValidation';
 import { authenticateRefreshToken } from '../controllers/refreshToken';
 import { verify } from 'crypto';
 
@@ -13,7 +13,7 @@ router.get('/users', getAll('users',()=>{
 }));
 router.get('/users/:id', getOne('users'));
 router.post('/users/signup', createUserValidator, signUp);
-router.post('/users/login', login);
+router.post('/users/login', loginValidator, login);
 router.post('/users/refresh-token', authenticateRefreshToken);
 router.post('/users/forgot-password', forgotPassword);
 router.post('/users/reset-code', verifyResetCode);
