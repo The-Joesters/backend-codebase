@@ -1,5 +1,7 @@
-import { check } from "express-validator";
+import { check,validationResult } from "express-validator";
 import { RequestHandler } from "express";
+import { Request, Response, NextFunction } from 'express';
+
 import prisma from "../../prisma/prismaClient";
 
 export const createUserValidator: RequestHandler[] = [
@@ -26,5 +28,23 @@ export const createUserValidator: RequestHandler[] = [
             if (val !== req.body.password)
                 throw new Error('passwords don\'t match')
             return true;
-        })
+        }),
+        (req: Request, res: Response, next: NextFunction) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            next();
+        }
 ]
+export const loginVerfication: RequestHandler[] = [
+    check('email').isEmail().withMessage('Please provide a valid email'),
+    check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    (req: Request, res: Response, next: NextFunction) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        next();
+    }
+    ]
