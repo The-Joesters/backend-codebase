@@ -5,20 +5,19 @@ import ApiError from '../middlewares/ApiError';
 import bcrypt, { hash } from 'bcrypt';
 import crypto from 'crypto';
 import sendMail from '../utils/sendMail';
+import { verifyGoogleIdToken } from '../middlewares/googleAuth';
 require('dotenv').config();
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
-    const { id, name, email, password, phone } = req.body;
+    const { name, email, password } = req.body;
     try {
         //create new user
         const hashedPassword = await bcrypt.hash(password, 15);
         const newUser = await prisma.users.create({
             data: {
-                id,
                 name,
                 email,
-                password: hashedPassword,
-                phone,
+                password: hashedPassword
             }
         })
 
@@ -39,7 +38,7 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
     const { email, password } = req.body;
     try {
         const user = await prisma.users.findUnique({ where: { email: email } });
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+        if (!user || !(await bcrypt.compare(password, user.password!))) {
             return next(new ApiError('Invalid email or password', 401));
         }
 
@@ -87,6 +86,7 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
             return next(new ApiError('error sending email', 400))
     }
 }
+
 export const verifyResetCode = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await prisma.users.findUnique({ where: { email: req.body.email } });
@@ -108,4 +108,10 @@ export const verifyResetCode = async (req: Request, res: Response, next: NextFun
         console.error('Error verifying reset code:', err);
         return next(new ApiError('Server error', 500));
     }
+}
+
+export const googleAuth = async(req: Request, res: Response, next: NextFunction) => { 
+    const { idToken } = req.body;
+    await verifyGoogleIdToken(idToken);
+    res.status(200).json({message: 'user created successfully'})
 }
