@@ -5,7 +5,7 @@ import ApiError from '../middlewares/ApiError';
 import bcrypt, { hash } from 'bcrypt';
 import crypto from 'crypto';
 import sendMail from '../utils/sendMail';
-import { verifyGoogleIdToken } from '../middlewares/googleAuth';
+import { verifyGoogleIdToken } from '../utils/googleAuth';
 require('dotenv').config();
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
