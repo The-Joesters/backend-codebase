@@ -87,3 +87,25 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
             return next(new ApiError('error sending email', 400))
     }
 }
+export const verifyResetCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await prisma.users.findUnique({ where: { email: req.body.email } });
+        if (!user)
+            return (new ApiError('user not found', 404));
+
+        const { resetCode } = req.body;
+        if (!resetCode)
+            return (new ApiError('reset code is required', 400));
+
+        const hashedresetCode = crypto.createHash('sha256').update(resetCode).digest('hex');
+        if (hashedresetCode !== user.resetCode) {
+            return next(new ApiError('Wrong code', 400));
+        }
+
+        res.status(200).json({ message: "Rest code verfied successfully" });
+    }
+    catch (err) {
+        console.error('Error verifying reset code:', err);
+        return next(new ApiError('Server error', 500));
+    }
+}
