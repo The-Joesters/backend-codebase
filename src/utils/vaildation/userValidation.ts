@@ -37,7 +37,7 @@ export const createUserValidator: RequestHandler[] = [
             next();
         }
 ]
-export const loginVerfication: RequestHandler[] = [
+export const loginValidator: RequestHandler[] = [
     check('email').isEmail().withMessage('Please provide a valid email'),
     check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     (req: Request, res: Response, next: NextFunction) => {
@@ -47,4 +47,4 @@ export const loginVerfication: RequestHandler[] = [
         }
         next();
     }
-    ]
+]
