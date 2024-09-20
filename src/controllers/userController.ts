@@ -5,7 +5,7 @@ import ApiError from '../middlewares/ApiError';
 import bcrypt, { hash } from 'bcrypt';
 import crypto from 'crypto';
 import sendMail from '../utils/sendMail';
-import { verifyGoogleIdToken } from '../utils/googleAuth';
+import { handleGoogleAuth } from '../utils/googleAuth';
 require('dotenv').config();
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -110,8 +110,26 @@ export const verifyResetCode = async (req: Request, res: Response, next: NextFun
     }
 }
 
-export const googleAuth = async(req: Request, res: Response, next: NextFunction) => { 
+export const googleAuth = async (req: Request, res: Response, next: NextFunction) => {
     const { idToken } = req.body;
-    await verifyGoogleIdToken(idToken);
-    res.status(200).json({message: 'user created successfully'})
+    try {
+        const user = await handleGoogleAuth(idToken);
+
+        // Generate a JWT token
+        if (!process.env.JWT_SECRET_KEY) {
+            throw new Error('JWT_SECRET_KEY is not defined');
+        }
+
+        const token = jwt.sign({ userId: user }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+
+        if (!process.env.REFRESH_TOKEN_KEY) {
+            throw new Error('JWT_SECRET_KEY is not defined');
+        }
+        const refreshToken = jwt.sign({ userId: user}, process.env.REFRESH_TOKEN_KEY)
+
+        res.status(200).json({ message: 'User authenticated successfully', token , refreshToken});
+    }
+    catch (err) {
+        throw(new ApiError('Server error', 500));
+    }
 }
