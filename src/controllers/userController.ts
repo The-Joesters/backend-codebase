@@ -30,7 +30,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
     }
     catch (err){
         console.log(err);
-        return (new ApiError('server error', 501));
+        throw new ApiError('server error', 501);
     }
 }
 
@@ -39,7 +39,7 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const user = await prisma.users.findUnique({ where: { email: email } });
         if (!user || !(await bcrypt.compare(password, user.password!))) {
-            return next(new ApiError('Invalid email or password', 401));
+            throw new ApiError('Invalid email or password', 401);
         }
 
         //generate a jwt
@@ -64,7 +64,7 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
 export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
     const user = await prisma.users.findUnique({ where: { email: req.body.email } });
         if (!user)
-            return next(new ApiError('user not found', 404));
+            throw new ApiError('user not found', 404);
 
     //Generate a 4-digit reset code
     const resetCode = Math.floor(1000 + Math.random() * 9000).toString();
@@ -91,22 +91,22 @@ export const verifyResetCode = async (req: Request, res: Response, next: NextFun
     try {
         const user = await prisma.users.findUnique({ where: { email: req.body.email } });
         if (!user)
-            return (new ApiError('user not found', 404));
+            throw (new ApiError('user not found', 404));
 
         const { resetCode } = req.body;
         if (!resetCode)
-            return (new ApiError('reset code is required', 400));
+            throw (new ApiError('reset code is required', 400));
 
         const hashedresetCode = crypto.createHash('sha256').update(resetCode).digest('hex');
         if (hashedresetCode !== user.resetCode) {
-            return next(new ApiError('Wrong code', 400));
+            throw(new ApiError('Wrong code', 400));
         }
 
         res.status(200).json({ message: "Rest code verfied successfully" });
     }
     catch (err) {
         console.error('Error verifying reset code:', err);
-        return next(new ApiError('Server error', 500));
+        throw(new ApiError('Server error', 500));
     }
 }
 
