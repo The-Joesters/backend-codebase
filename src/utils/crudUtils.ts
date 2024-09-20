@@ -49,7 +49,7 @@ export const getOne = (modelName: ModelName) =>
         where: { id },
       });
       if (!document) {
-        return next(new ApiError("this shit is not exist",404))
+        return next(new ApiError("nothing Exists under this user", 404))
       }
       res.status(200).json({ data: document });
     } catch (error) {
@@ -58,10 +58,14 @@ export const getOne = (modelName: ModelName) =>
     }
   };
 
-export const createOne = (modelName: ModelName) =>
+export const createOne = (modelName: ModelName, callback?: Callback) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const model = prisma[modelName] as PrismaModel;
+      if (callback) {
+        const result = await callback(req, res, next);
+        if (result === false) return next(new ApiError("Error While Creating using cb",500));
+      }
       const created = await model.create({
         data: req.body,
       });
