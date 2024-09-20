@@ -4,6 +4,7 @@ import { forgotPassword, login, signUp, verifyResetCode } from '../controllers/u
 import { createUserValidator, loginValidator } from '../utils/vaildation/userValidation';
 import { authenticateRefreshToken } from '../controllers/refreshToken';
 import { verify } from 'crypto';
+import { checkAuth } from '../middlewares/checkAuth';
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get('/users', getAll('users',()=>{
     console.log("this is working ");
     return true;
 }));
-router.get('/users/:id', getOne('users'));
+router.get('/users/:id', checkAuth ,getOne('users'));
 router.post('/users/signup', createUserValidator, signUp);
 router.post('/users/login', loginValidator, login);
 router.post('/users/refresh-token', authenticateRefreshToken);
