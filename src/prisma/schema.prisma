@@ -214,13 +214,15 @@ model users {
   name                      String                      @db.VarChar(255)
   email                     String                      @unique(map: "email") @db.VarChar(255)
   password                  String?                     @db.VarChar(255)
-  phone                     String?                     @db.VarChar(255)
+  age                       Int?
+  gender                    String?                     @db.VarChar(255)
   streak_count              Int?                        @default(0)
   level                     Int?                        @default(1)
   total_points              Int?                        @default(0)
   character_id              Int?
   created_at                DateTime?                   @db.Timestamp(0)
   resetCode                 String?                     @db.VarChar(255)
+  preferedStreak            Int?
   article_ratings           article_ratings[]
   article_reading_progress  article_reading_progress[]
   articles                  articles[]
