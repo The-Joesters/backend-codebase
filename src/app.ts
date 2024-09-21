@@ -3,12 +3,15 @@ import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger';
 import userRoutes from './routes/userRoutes'
+import morgan from 'morgan';
 
-const app = express();
+
+export const app = express();
 const port = process.env.PORT || 3000;
 dotenv.config();
 // API documentation route
 app.use(express.json());
+app.use(morgan('dev'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api',userRoutes);
 app.get('/', async (req: Request, res: Response) => {
