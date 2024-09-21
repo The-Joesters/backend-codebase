@@ -45,6 +45,7 @@ class WebScrape {
       
       console.log("test to see it")
       await browser.close();
+      
       return data;
     }catch(err){
       throw(new ApiError("Error in the link of Medium",404));
