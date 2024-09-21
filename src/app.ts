@@ -7,8 +7,12 @@ import articleRoute from './routes/articlesRoutes';
 import { NextFunction } from 'http-proxy-middleware/dist/types';
 import { globalErrorHandler } from './middlewares/errorHandler';
 import ApiError from './middlewares/ApiError';
-
+import bodyParser from 'body-parser';
+import cors from 'cors';
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 const port = process.env.PORT || 3000;
 dotenv.config();
 app.use(express.json());
@@ -18,6 +22,9 @@ app.use('/api', articleRoute);
 app.get('/submitt', async (req: Request, res: Response) => {
   res.send({"data":'Hello World'});
 });
+app.get('/',(req:Request,res:Response)=>{
+  res.send("This is Reading Sphere home page got to /api-docs ");
+})
 
 //hande wrong routes
 const re=new RegExp('(.*)');
