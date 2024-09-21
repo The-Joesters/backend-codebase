@@ -38,8 +38,10 @@ export const createUserValidator: RequestHandler[] = [
         }
 ]
 export const loginValidator: RequestHandler[] = [
-    check('email').isEmail().withMessage('Please provide a valid email'),
-    check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    check('email').notEmpty().withMessage('email is missing')
+        .isEmail().withMessage('invalid email'),
+    check('password').notEmpty().withMessage('password is missing')
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
