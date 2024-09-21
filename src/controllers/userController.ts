@@ -46,14 +46,14 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
         if (!process.env.JWT_SECRET_KEY) {
             throw new Error('JWT_SECRET_KEY is not defined');
         }
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+        const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
         if (!process.env.REFRESH_TOKEN_KEY) {
             throw new Error('JWT_SECRET_KEY is not defined');
         }
         const refreshToken = jwt.sign({ userId: user.id }, process.env.REFRESH_TOKEN_KEY)
 
-        res.status(201).json({ token, refreshToken });
+        res.status(201).json({ accessToken, refreshToken });
     }
     catch(err) {
         if (err)
