@@ -157,6 +157,12 @@ model books {
   @@index([uploaded_by_user_id], map: "uploaded_by_user_id")
 }
 
+model character {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  description String? @db.Text
+}
+
 model customization_items {
   id          Int         @id @default(autoincrement())
   name        String      @db.VarChar(255)
@@ -241,12 +247,6 @@ model users {
   @@index([character_id], map: "character_id")
 }
 
-model character {
-  id          Int     @id @default(autoincrement())
-  name        String  @db.VarChar(255)
-  description String? @db.Text
-}
-
 model bookmarked_articles {
   id         Int       @id @default(autoincrement())
   user_id    Int
@@ -259,3 +259,4 @@ model bookmarked_articles {
   @@index([article_id], map: "article_id_index")
   @@index([user_id], map: "user_id_index")
 }
+

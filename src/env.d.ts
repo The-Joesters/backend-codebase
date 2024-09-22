@@ -5,6 +5,8 @@ declare namespace NodeJS {
       PORT?: string;
       NODE_ENV?: 'development' | 'production' | 'test';
       DATABASE_URL?: string;
+      AI_MODEL?:string;
+      PUBLIC_URL:string;
     }
   }
   

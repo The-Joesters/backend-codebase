@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import ApiError from '../middlewares/ApiError';
+import { Model } from 'firebase-admin/lib/machine-learning/machine-learning';
 
 const prisma = new PrismaClient();
 
-type Callback = (req: Request, res: Response, next: NextFunction) => Promise<boolean> | boolean;
+type Callback = (req: Request, res: Response, next: NextFunction) => Promise<void> | boolean;
 
 type PrismaModel = {
   findMany: (...args: any[]) => Promise<any[]>;
@@ -49,7 +50,7 @@ export const getOne = (modelName: ModelName) =>
         where: { id },
       });
       if (!document) {
-        return next(new ApiError("this shit is not exist",404))
+        return next(new ApiError("nothing Exists under this user", 404))
       }
       res.status(200).json({ data: document });
     } catch (error) {
@@ -58,14 +59,19 @@ export const getOne = (modelName: ModelName) =>
     }
   };
 
-export const createOne = (modelName: ModelName) =>
+export const createOne = (modelName: ModelName, callback?: Callback) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const model = prisma[modelName] as PrismaModel;
+      if (callback) {
+        await callback(req, res, next);
+      }
       const created = await model.create({
         data: req.body,
       });
+      req.body.id = created.id;
       res.status(201).json({ message: 'Created successfully', data: created });
+      next();
     } catch (error) {
       console.error(`Error creating ${String(modelName)}:`, error);
       next(error);
