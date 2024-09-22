@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import ApiError from '../middlewares/ApiError';
-import { Model } from 'firebase-admin/lib/machine-learning/machine-learning';
 
 const prisma = new PrismaClient();
 

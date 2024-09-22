@@ -86,7 +86,6 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
 export const verifyResetCode = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await prisma.users.findUnique({ where: { email: req.body.email } });
-        console.log(user);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

@@ -138,6 +138,7 @@ model books {
   title                 String                  @db.VarChar(255)
   category_id           Int?
   summary               String                  @db.Text
+  cover_image           String?                 @db.VarChar(255)
   audio_path            String?                 @db.Text
   audio_length          String?                 @db.VarChar(255)
   section_count         Int
@@ -158,9 +159,10 @@ model books {
 }
 
 model character {
-  id          Int     @id @default(autoincrement())
-  name        String  @db.VarChar(255)
-  description String? @db.Text
+  id              Int     @id @default(autoincrement())
+  name            String  @db.VarChar(255)
+  description     String? @db.Text
+  character_image String? @db.VarChar(255)
 }
 
 model customization_items {
@@ -259,4 +261,3 @@ model bookmarked_articles {
   @@index([article_id], map: "article_id_index")
   @@index([user_id], map: "user_id_index")
 }
-

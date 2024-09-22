@@ -1,4 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+
+declare module 'express-serve-static-core' {
+    interface Request {
+        userId?: number;
+    }
+}
 import articlesService from '../services/articlesService';
 import { createOne, getAll, getOne } from '../utils/crudUtils';
 import webScrapeService from '../services/webScrapeService';
@@ -12,6 +18,7 @@ export const UploadArticle = createOne('articles', async (req: Request, res: Res
     try {
         req.body = req.body || {};
         req.userId = 2;
+        console.log(req.body);
         console.log("this is the qurey", req.query);
         const link = `${req.query.link}`;
         const webScrapeServices = new webScrapeService();

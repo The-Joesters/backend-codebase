@@ -1,16 +1,15 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response,NextFunction } from 'express';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger';
 import userRoutes from './routes/userRoutes'
 import morgan from 'morgan';
-
 import articleRoute from './routes/articlesRoutes';
-import { NextFunction } from 'http-proxy-middleware/dist/types';
 import { globalErrorHandler } from './middlewares/errorHandler';
 import ApiError from './middlewares/ApiError';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import booksRoute from './routes/booksRoutes';
 export const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +21,7 @@ app.use(morgan('dev'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', userRoutes);
 app.use('/api', articleRoute);
+app.use('/api',booksRoute)
 app.get('/submitt', async (req: Request, res: Response) => {
   res.send({"data":'Hello World'});
 });
