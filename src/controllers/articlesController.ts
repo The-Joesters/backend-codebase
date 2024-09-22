@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from 'express';
 
 declare module 'express-serve-static-core' {
     interface Request {
         userId?: number;
     }
 }
+import { NextFunction, Request, Response } from 'express';
 import articlesService from '../services/articlesService';
 import { createOne, getAll, getOne } from '../utils/crudUtils';
 import webScrapeService from '../services/webScrapeService';
