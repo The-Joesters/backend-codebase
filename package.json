@@ -4,9 +4,11 @@
   "description": "Backend codebase for the Reading sphere application",
   "main": "app.ts",
   "scripts": {
+    "clean":"rimraf dist",
     "test": "echo 'jest'",
-    "build": "tsc",
-    "start": "node ./dist/src/app.js"
+    "build": "tsc && mv ./dist/src/* ./dist && rm -rf ./dist/src",
+    "start": "node ./dist/app.js"
+
   },
   "author": "TheJoesters",
   "license": "ISC",
