@@ -1,0 +1,37 @@
+[33mcommit b528f705f20ea6aaa5e6924a7d0d61929ff6c8f7[m
+Author: Arsany Ashraf <arsanyarsany4800@gmail.com>
+Date:   Sun Sep 22 18:37:56 2024 +0300
+
+    Updated the confige file location for firebase
+
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex 883526b..181fb43 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -3,4 +3,4 @@[m
+ .env[m
+ /Articles[m
+ /bookCovers[m
+[31m-/config/reading-shpere-firebase-adminsdk-nczwt-c2639686d3.json[m
+\ No newline at end of file[m
+[32m+[m[32m/src/config/reading-shpere-firebase-adminsdk-nczwt-c2639686d3.json[m
+\ No newline at end of file[m
+[1mdiff --git a/src/config/reading-shpere-firebase-adminsdk-nczwt-c2639686d3.json b/src/config/reading-shpere-firebase-adminsdk-nczwt-c2639686d3.json[m
+[1mdeleted file mode 100644[m
+[1mindex ee08bd3..0000000[m
+[1m--- a/src/config/reading-shpere-firebase-adminsdk-nczwt-c2639686d3.json[m
+[1m+++ /dev/null[m
+[36m@@ -1,13 +0,0 @@[m
+[31m-{[m
+[31m-  "type": "service_account",[m
+[31m-  "project_id": "reading-shpere",[m
+[31m-  "private_key_id": "c2639686d392c86948df27add6717b080b35afed",[m
+[31m-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDhub+zas9mB+4o\nV0ixNAkyXYV3InbUqt6eZuoG43dDb44Ft0zXkiPLL3OJYQO9ORna/SPqIfPD8geW\noIccIyNcloshlNPoDrvXyRszha+iAe/4sH+zpn05Fw4oZnz3t9//OKjnlGZiu6Nw\n4/n2YTzWxURCzuemvRXpUcd6kfiVN8agc+4gSNDrEM7EZiryORS0qN+EyZByknHy\nJqUZdXAogvgiReyey2/IaL2YCgWlefmeyzHHbKeRl0ozD5ey4rwRF4M8uRF+zCqF\nHSGT7HT5VcnrUyuW5E6G0jsKjebb2VeX4mBnXNvD0M9J19OvLrzW90BItAR7pWD3\np92myFzzAgMBAAECggEAcE7qlhrVISdd8/1loiFJWCFW+A0SQcLYa8i5tP61Brz4\n1Vg7p+BC5ePwoNA/u4SvHBmqJmKJNht0chnhz3qeLAGNLQKvIn0+MeGSIqLn3XwI\nSVyL1TdHg8G4XhqMH/aBQSuQQlTAUmyYp+EOK+t6iUNyMKlgccIPplx1m0MIgzjj\nW/bdKG6wRe/TP9u3SJCDz6pLsDxjJBymTYVGlFD+jLDC4v00lNShvqECmJFFJy8T\natSYFp6/ruwOy+x7nGFifJOKHcPVYM4YUvT54sNyW7dt+46114uiBsz1Ob9qqJOl\nTt8eQSHJCohNbHiyYSeJvw0x6cgoVZjxXBBFwc/DNQKBgQD1im/pd9xnTjpycShY\n/Omxg+Q1LwhVuJjY38Ejtp4e60r+7/wHCFtU+zH3j/z7Gb86Io2SoqE8Bg9u91+n\nVTOKiKzx+aTtmGhq9aZSpDNj5z39jTAD817phRzFN5DUoCJdGMxORSuZxo3Lu8P5\n+lw8k7/0LQqtg+cEOohb0Cx5NwKBgQDrVztYylM6n6q2OJh6WeXrMPCqzUbypJcz\n3SaVSZyIzIQIad5nqXeJ+RdIF/tI1u6WSMQN3zV98UHuHWZnFtNaI2jcvRxBypfy\nwY4EWjjxK8RqalcR78wWgWidajhq1dOcoVovSkBopBeEGbazM9bvBOpLoBpEVd7V\nipXfngfoJQKBgQCk2qKSrK/lCCfDqGe/f2bjkTrJ3l8JNpwgl/ITqUt2VOGQUs3y\nZtDzOIfuv9TJPhsezA4jUl9Qbn00MpAdR94H+AWtnL/36ajJj05xE9+RBrOfJYkE\nTgT+YinT25+4sh8ARGL/df91ClMvY0yL7GS7IzPwm8EciH+1XhspEZaadwKBgBYK\nk3pbaLQi5CAw6Mb8yHXgnYnBtBVhqO+olMaCoHCHhw4qrDPVQWbgt3d/F3/Y8XuN\n0R7jeuUSxXQBuOeK0byteFLEO3NGADkyO5TYxmCAEuNMll8NsHWjJSMpIaOP50PS\nMNohACtMww8SQXRDNKwqL69pjUw9JqOlWSgaau8pAoGAGsAUZzbTeHQBb1IWq6jL\nzzXvVoSNWPVMyH/QuBXCX77pLPVbQ5UP0j5kBySjqW7otVVnjkym3YnM+LQYym+L\nNBroZf05MmGkmv/rZEmAxnV9DEXc8RNZ7O7f6KMPhoRGj8FxXY3c6CcqS3EGMUZG\niqONOS43oT0Cov8Qh+QXUJs=\n-----END PRIVATE KEY-----\n",[m
+[31m-  "client_email": "firebase-adminsdk-nczwt@reading-shpere.iam.gserviceaccount.com",[m
+[31m-  "client_id": "110973073703855205453",[m
+[31m-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",[m
+[31m-  "token_uri": "https://oauth2.googleapis.com/token",[m
+[31m-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",[m
+[31m-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-nczwt%40reading-shpere.iam.gserviceaccount.com",[m
+[31m-  "universe_domain": "googleapis.com"[m
+[31m-}[m
