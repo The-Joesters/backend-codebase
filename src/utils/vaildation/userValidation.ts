@@ -19,7 +19,7 @@ export const createUserValidator: RequestHandler[] = [
         }),
     check('password')
         .notEmpty().withMessage('password is required')
-        .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
         .matches(/\d/).withMessage('Password must contain at least one digit')
         .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special character'),
     check('confirmPassword')
