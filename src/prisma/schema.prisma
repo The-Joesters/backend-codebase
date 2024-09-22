@@ -21,14 +21,14 @@ model article_ratings {
 }
 
 model article_reading_progress {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   article_id   Int
   user_id      Int
-  is_completed Boolean?
-  articles     articles @relation(fields: [article_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_1")
-  users        users    @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_2")
+  is_completed DateTime? @db.DateTime(0)
+  articles     articles  @relation(fields: [article_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_1")
+  users        users     @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_2")
 
-  @@index([article_id], map: "article_id")
+  @@unique([article_id, user_id], map: "article_id")
   @@index([user_id], map: "user_id")
 }
 
@@ -44,6 +44,7 @@ model articles {
   article_reading_progress article_reading_progress[]
   book_categories          book_categories?           @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "articles_ibfk_1")
   users                    users?                     @relation(fields: [uploaded_by_user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "articles_ibfk_2")
+  bookmarked_articles      bookmarked_articles[]
 
   @@index([category_id], map: "category_id")
   @@index([uploaded_by_user_id], map: "uploaded_by_user_id")
@@ -156,6 +157,12 @@ model books {
   @@index([uploaded_by_user_id], map: "uploaded_by_user_id")
 }
 
+model character {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  description String? @db.Text
+}
+
 model customization_items {
   id          Int         @id @default(autoincrement())
   name        String      @db.VarChar(255)
@@ -229,6 +236,7 @@ model users {
   book_progress             book_progress[]
   book_ratings              book_ratings[]
   book_section_progress     book_section_progress[]
+  bookmarked_articles       bookmarked_articles[]
   bookmarked_books          bookmarked_books[]
   books                     books[]
   inventory                 inventory[]
@@ -239,8 +247,16 @@ model users {
   @@index([character_id], map: "character_id")
 }
 
-model character {
-  id          Int     @id @default(autoincrement())
-  name        String  @db.VarChar(255)
-  description String? @db.Text
+model bookmarked_articles {
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  article_id Int
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  articles   articles  @relation(fields: [article_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_article")
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_user")
+
+  @@unique([user_id, article_id], map: "user_article_unique")
+  @@index([article_id], map: "article_id_index")
+  @@index([user_id], map: "user_id_index")
 }
+

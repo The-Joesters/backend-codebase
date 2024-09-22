@@ -5,18 +5,37 @@ import swaggerSpec from './docs/swagger';
 import userRoutes from './routes/userRoutes'
 import morgan from 'morgan';
 
-
+import articleRoute from './routes/articlesRoutes';
+import { NextFunction } from 'http-proxy-middleware/dist/types';
+import { globalErrorHandler } from './middlewares/errorHandler';
+import ApiError from './middlewares/ApiError';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 export const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 const port = process.env.PORT || 3000;
 dotenv.config();
-// API documentation route
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api',userRoutes);
-app.get('/', async (req: Request, res: Response) => {
-    res.send('Hello World');
+app.use('/api', userRoutes);
+app.use('/api', articleRoute);
+app.get('/submitt', async (req: Request, res: Response) => {
+  res.send({"data":'Hello World'});
 });
+app.get('/',(req:Request,res:Response)=>{
+  res.send("This is Reading Sphere home page got to /api-docs ");
+})
+
+//hande wrong routes
+const re=new RegExp('(.*)');
+app.use(re, (req: Request, res: Response, next: NextFunction) => {
+next(new ApiError("Route Not Found",404));
+});
+
+app.use(globalErrorHandler);
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
