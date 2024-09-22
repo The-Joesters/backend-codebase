@@ -4,8 +4,7 @@
   "description": "Backend codebase for the Reading sphere application",
   "main": "app.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "start": "tsc && node ./dist/app.js",
+    "start": "tsc && node ./dist/src/app.js",
     "test": "jest"
   },
   "author": "TheJoesters",
