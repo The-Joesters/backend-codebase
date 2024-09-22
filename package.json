@@ -4,7 +4,7 @@
   "description": "Backend codebase for the Reading sphere application",
   "main": "app.ts",
   "scripts": {
-    "start": "tsc && node ./dist/src/app.js",
+    "start": "tsc && node ./dist/app.js",
     "test": "jest"
   },
   "author": "TheJoesters",
