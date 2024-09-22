@@ -1,5 +1,3 @@
-// RoutesDocs.js
-
 /**
  * @swagger
  * components:
@@ -9,80 +7,128 @@
  *       properties:
  *         id:
  *           type: integer
- *           description: The unique identifier for the article
  *         title:
  *           type: string
- *           description: The title of the article
  *         article_link:
  *           type: string
- *           description: The URL of the article
+ *         category_id:
+ *           type: integer
+ *           nullable: true
  *         summary:
  *           type: string
- *           description: A brief summary of the article
+ *           nullable: true
  *         uploaded_by_user_id:
  *           type: integer
- *           description: The ID of the user who uploaded the article
+ *           nullable: true
  *         is_public:
  *           type: boolean
- *           description: Indicates if the article is public
+ *     ArticleReadingProgress:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         article_id:
+ *           type: integer
+ *         user_id:
+ *           type: integer
+ *         is_completed:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *     BookmarkedArticle:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         user_id:
+ *           type: integer
+ *         article_id:
+ *           type: integer
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
  */
 
 /**
  * @swagger
- * /articles/completed:
+ * /api/articles/completed:
  *   get:
  *     summary: Get completed articles
+ *     tags:
+ *       - Articles
  *     responses:
  *       200:
- *         description: Successfully retrieved completed articles
+ *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Article'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ArticleReadingProgress'
  */
 
 /**
  * @swagger
- * /articles/inprogress:
+ * /api/articles/inprogress:
  *   get:
  *     summary: Get articles in progress
+ *     tags:
+ *       - Articles
  *     responses:
  *       200:
- *         description: Successfully retrieved articles in progress
+ *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Article'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ArticleReadingProgress'
  */
 
 /**
  * @swagger
- * /articles/bookmarked:
+ * /api/articles/bookmarked:
  *   get:
  *     summary: Get bookmarked articles
+ *     tags:
+ *       - Articles
  *     responses:
  *       200:
- *         description: Successfully retrieved bookmarked articles
+ *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Article'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/BookmarkedArticle'
  */
 
 /**
  * @swagger
- * /articles:
+ * /api/articles:
  *   get:
  *     summary: Get all articles
+ *     tags:
+ *       - Articles
  *     responses:
  *       200:
- *         description: Successfully retrieved all articles
+ *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
@@ -93,74 +139,134 @@
 
 /**
  * @swagger
- * /articles/upload:
+ * /api/articles/upload:
  *   post:
  *     summary: Upload a new article
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               article_link:
- *                 type: string
- *               summary:
- *                 type: string
+ *     tags:
+ *       - Articles
+ *     parameters:
+ *       - in: query
+ *         name: link
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       201:
- *         description: Successfully uploaded article
+ *         description: Created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Article'
  */
 
 /**
  * @swagger
- * /articles/bookmark/{ArticleId}:
- *   post:
- *     summary: Bookmark an article
+ * /api/articles/bookmark/{ArticleId}:
+ *   delete:
+ *     summary: Delete a bookmark
+ *     tags:
+ *       - Articles
  *     parameters:
  *       - in: path
  *         name: ArticleId
  *         required: true
- *         description: ID of the article to bookmark
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Successfully bookmarked article
- */
-
-/**
- * @swagger
- * /articles/bookmark/{ArticleId}:
- *   delete:
- *     summary: Delete a bookmark
+ *         description: Successful response
+ *   post:
+ *     summary: Bookmark an article
+ *     tags:
+ *       - Articles
  *     parameters:
  *       - in: path
  *         name: ArticleId
  *         required: true
- *         description: ID of the article to remove from bookmarks
  *         schema:
  *           type: integer
  *     responses:
- *       204:
- *         description: Successfully deleted bookmark
+ *       201:
+ *         description: Created Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/BookmarkedArticle'
  */
 
 /**
  * @swagger
- * /articles/finish/{article_id}:
+ * /api/articles/finish/{article_id}:
  *   post:
- *     summary: Finish reading an article
+ *     summary: Finish an article
+ *     tags:
+ *       - Articles
  *     parameters:
  *       - in: path
  *         name: article_id
  *         required: true
- *         description: ID of the article to finish
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Successfully marked article as finished
+ *         description: Updated Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/ArticleReadingProgress'
+ */
+
+/**
+ * @swagger
+ * /api/articles/{article_id}:
+ *   post:
+ *     summary: Start an article by ID
+ *     tags:
+ *       - Articles
+ *     parameters:
+ *       - in: path
+ *         name: article_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
+
+/**
+ * @swagger
+ * /api/articles/{id}:
+ *   get:
+ *     summary: Get an article by ID
+ *     tags:
+ *       - Articles
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Article'
  */
