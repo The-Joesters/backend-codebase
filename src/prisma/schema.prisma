@@ -13,8 +13,8 @@ model article_ratings {
   article_id Int
   rating     Int?
   review     String?  @db.Text
-  users      users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_ratings_ibfk_1")
-  articles   articles @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_ratings_ibfk_2")
+  users      users    @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "article_ratings_ibfk_1")
+  articles   articles @relation(fields: [article_id], references: [id], onUpdate: Restrict, map: "article_ratings_ibfk_2")
 
   @@index([article_id], map: "article_id")
   @@index([user_id], map: "user_id")
@@ -25,8 +25,8 @@ model article_reading_progress {
   article_id   Int
   user_id      Int
   is_completed DateTime? @db.DateTime(0)
-  articles     articles  @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_reading_progress_ibfk_1")
-  users        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_reading_progress_ibfk_2")
+  articles     articles  @relation(fields: [article_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_1")
+  users        users     @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "article_reading_progress_ibfk_2")
 
   @@unique([article_id, user_id], map: "article_id")
   @@index([user_id], map: "user_id")
@@ -42,8 +42,8 @@ model articles {
   is_public                Boolean?                   @default(true)
   article_ratings          article_ratings[]
   article_reading_progress article_reading_progress[]
-  book_categories          book_categories?           @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "articles_ibfk_1")
-  users                    users?                     @relation(fields: [uploaded_by_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "articles_ibfk_2")
+  book_categories          book_categories?           @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "articles_ibfk_1")
+  users                    users?                     @relation(fields: [uploaded_by_user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "articles_ibfk_2")
   bookmarked_articles      bookmarked_articles[]
 
   @@index([category_id], map: "category_id")
@@ -75,8 +75,8 @@ model book_progress {
   sections_completed    Int?
   percentage            Int?
   is_completed          Boolean?
-  users                 users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_progress_ibfk_1")
-  books                 books    @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_progress_ibfk_2")
+  users                 users    @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "book_progress_ibfk_1")
+  books                 books    @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_progress_ibfk_2")
 
   @@index([book_id], map: "book_id")
   @@index([user_id], map: "user_id")
@@ -88,8 +88,8 @@ model book_ratings {
   book_id Int
   rating  Int?
   review  String? @db.Text
-  users   users   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_ratings_ibfk_1")
-  books   books   @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_ratings_ibfk_2")
+  users   users   @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "book_ratings_ibfk_1")
+  books   books   @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_ratings_ibfk_2")
 
   @@index([book_id], map: "book_id")
   @@index([user_id], map: "user_id")
@@ -101,9 +101,9 @@ model book_section_progress {
   user_id       Int
   section_id    Int?
   is_completed  Boolean?
-  books         books          @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_section_progress_ibfk_1")
-  users         users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_section_progress_ibfk_2")
-  book_sections book_sections? @relation(fields: [section_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_section_progress_ibfk_3")
+  books         books          @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_section_progress_ibfk_1")
+  users         users          @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "book_section_progress_ibfk_2")
+  book_sections book_sections? @relation(fields: [section_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "book_section_progress_ibfk_3")
 
   @@index([book_id], map: "book_id")
   @@index([section_id], map: "section_id")
@@ -117,7 +117,7 @@ model book_sections {
   content               String?                 @db.Text
   estimated_time        Int?
   book_section_progress book_section_progress[]
-  books                 books                   @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "book_sections_ibfk_1")
+  books                 books                   @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "book_sections_ibfk_1")
 
   @@index([book_id], map: "book_id")
 }
@@ -126,8 +126,8 @@ model bookmarked_books {
   id      Int   @id @default(autoincrement())
   user_id Int
   book_id Int
-  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bookmarked_books_ibfk_1")
-  books   books @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "bookmarked_books_ibfk_2")
+  users   users @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "bookmarked_books_ibfk_1")
+  books   books @relation(fields: [book_id], references: [id], onUpdate: Restrict, map: "bookmarked_books_ibfk_2")
 
   @@index([book_id], map: "book_id")
   @@index([user_id], map: "user_id")
@@ -150,8 +150,8 @@ model books {
   book_section_progress book_section_progress[]
   book_sections         book_sections[]
   bookmarked_books      bookmarked_books[]
-  book_categories       book_categories?        @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "books_ibfk_1")
-  users                 users?                  @relation(fields: [uploaded_by_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "books_ibfk_2")
+  book_categories       book_categories?        @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "books_ibfk_1")
+  users                 users?                  @relation(fields: [uploaded_by_user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "books_ibfk_2")
 
   @@index([category_id], map: "category_id")
   @@index([uploaded_by_user_id], map: "uploaded_by_user_id")
@@ -170,8 +170,8 @@ model inventory {
   id                  Int                 @id @default(autoincrement())
   user_id             Int
   item_id             Int
-  users               users               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_1")
-  customization_items customization_items @relation(fields: [item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_2")
+  users               users               @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "inventory_ibfk_1")
+  customization_items customization_items @relation(fields: [item_id], references: [id], onUpdate: Restrict, map: "inventory_ibfk_2")
 
   @@index([item_id], map: "item_id")
   @@index([user_id], map: "user_id")
@@ -183,7 +183,7 @@ model subscriptions {
   plan_type  String?   @db.VarChar(255)
   start_date DateTime? @db.Timestamp(0)
   end_date   DateTime? @db.Timestamp(0)
-  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "subscriptions_ibfk_1")
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "subscriptions_ibfk_1")
 
   @@index([user_id], map: "user_id")
 }
@@ -192,8 +192,8 @@ model user_badges {
   id       Int    @id @default(autoincrement())
   user_id  Int
   badge_id Int
-  users    users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_badges_ibfk_1")
-  badges   badges @relation(fields: [badge_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_badges_ibfk_2")
+  users    users  @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "user_badges_ibfk_1")
+  badges   badges @relation(fields: [badge_id], references: [id], onUpdate: Restrict, map: "user_badges_ibfk_2")
 
   @@index([badge_id], map: "badge_id")
   @@index([user_id], map: "user_id")
@@ -203,8 +203,8 @@ model user_preferred_categories {
   id              Int              @id @default(autoincrement())
   user_id         Int?
   category_id     Int?
-  users           users?           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_preferred_categories_ibfk_1")
-  book_categories book_categories? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_preferred_categories_ibfk_2")
+  users           users?           @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_preferred_categories_ibfk_1")
+  book_categories book_categories? @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_preferred_categories_ibfk_2")
 
   @@index([category_id], map: "category_id")
   @@index([user_id], map: "user_id")
@@ -252,8 +252,8 @@ model bookmarked_articles {
   user_id    Int
   article_id Int
   created_at DateTime? @default(now()) @db.Timestamp(0)
-  articles   articles  @relation(fields: [article_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_article")
-  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user")
+  articles   articles  @relation(fields: [article_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_article")
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_user")
 
   @@unique([user_id, article_id], map: "user_article_unique")
   @@index([article_id], map: "article_id_index")
