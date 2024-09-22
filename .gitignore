@@ -2,4 +2,7 @@
 /node_modules
 .env
 /Articles
-/bookCovers
+/src/Articles
+# /src/config/reading-shpere-firebase-adminsdk-nczwt-c2639686d3.json
+/booksCovers
+/src/config
