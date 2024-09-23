@@ -58,29 +58,34 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const user = await prisma.users.findUnique({ where: { email: req.body.email } });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Generate a 4-digit reset code
-        const resetCode = Math.floor(1000 + Math.random() * 9000).toString();
-        user.resetCode = crypto.createHash('sha256').update(resetCode).digest('hex');
-        const message = `Your reset code is ${resetCode}`;
-
-        await sendMail({
-            to: user.email,
-            subject: 'Reset Password',
-            text: message,
+export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => { 
+    try { 
+        const user = await prisma.users.findUnique({ where: { email: req.body.email } }); 
+        if (!user) { 
+            return res.status(404).json({ message: 'User not found' }); 
+        } 
+ 
+        // Generate a 4-digit reset code 
+        const resetCode = Math.floor(1000 + Math.random() * 9000).toString(); 
+        const hashedResetCode = crypto.createHash('sha256').update(resetCode).digest('hex'); 
+        const message = `Your reset code is ${resetCode}`; 
+ 
+        await prisma.users.update({ 
+            where: { email: req.body.email }, 
+            data: { resetCode: hashedResetCode }, 
+        }); 
+ 
+        await sendMail({ 
+            to: user.email, 
+            subject: 'Reset Password', 
+            text: message, 
             html: `<p>Your password reset code is <strong>${resetCode}</strong></p>`
-        });
-        res.status(200).json({ message: 'Reset code sent successfully' });
-    } catch (err) {
-        console.error('Error in forgotPassword:', err);
-        res.status(500).json({ message: 'Error sending email' });
-    }
+        }); 
+        res.status(200).json({ message: 'Reset code sent successfully' }); 
+    } catch (err) { 
+        console.error('Error in forgotPassword:', err); 
+        res.status(500).json({ message: 'Error sending email' }); 
+    } 
 };
 
 export const verifyResetCode = async (req: Request, res: Response, next: NextFunction) => {
@@ -101,7 +106,12 @@ export const verifyResetCode = async (req: Request, res: Response, next: NextFun
             return res.status(400).json({ message: 'Wrong code' });
         }
 
-        res.status(200).json({ message: 'Reset code verified successfully' });
+        if (!process.env.JWT_SECRET_KEY) {
+            return res.status(500).json({ message: 'JWT_SECRET_KEY is not defined' });
+        }
+        const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+
+        res.status(200).send({ message: 'Reset code verified successfully', "accesstoken":accessToken });
     } catch (err) {
         console.error('Error verifying reset code:', err);
         res.status(500).json({ message: 'Server error' });
