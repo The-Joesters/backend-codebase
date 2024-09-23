@@ -22,7 +22,13 @@ const swaggerDefinition = {
       bearerFormat: 'JWT',
     },
   },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
 };
+
 
 const options = {
   swaggerDefinition,
