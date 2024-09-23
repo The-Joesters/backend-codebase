@@ -16,7 +16,7 @@ class WebScrape {
 
   private async browserInit() {
     return await puppeteer.launch({
-      executablePath: '/usr/bin/chromium-browser', // Update this path based on your setup
+      // executablePath: '/usr/bin/chromium-browser', // Update this path based on your setup
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
   }
