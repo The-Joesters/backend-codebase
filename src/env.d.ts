@@ -12,5 +12,7 @@ declare namespace NodeJS {
     EMAIL_USER:string;
     EMAIL_PASS:string;
     GOOGLE_CLIENT_ID:string;
+    SWAGGER_LINK_PUBLIC:string;
+    
   }
 }
