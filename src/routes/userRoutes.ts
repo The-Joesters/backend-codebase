@@ -1,6 +1,6 @@
 import express from 'express';
 import { getAll, getOne, createOne, updateOne, deleteOne } from '../utils/crudUtils';
-import { forgotPassword, googleAuth, login, signUp, verifyResetCode } from '../controllers/userController';
+import { forgotPassword, googleAuth, login, signUp, updateProfile, verifyResetCode } from '../controllers/userController';
 import { createUserValidator, loginValidator } from '../utils/vaildation/userValidation';
 import { authenticateRefreshToken } from '../controllers/refreshToken';
 import { verify } from 'crypto';
@@ -19,7 +19,7 @@ router.post('/users/refresh-token', authenticateRefreshToken);
 router.post('/users/forgot-password', forgotPassword);
 router.post('/users/reset-code', verifyResetCode);
 router.post('/users/google', googleAuth);
-router.put('/users/:id', updateOne('users'));
-router.delete('/users/:id', deleteOne('users'));
+router.put('/users/:id',checkAuth ,updateProfile);
+router.delete('/users/:id', checkAuth,deleteOne('users'));
 
 export default router;

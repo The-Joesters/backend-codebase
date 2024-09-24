@@ -8,7 +8,7 @@ import { handleGoogleAuth } from '../utils/googleAuth';
 require('dotenv').config();
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, age, gender, preferedStreak, character_id } = req.body;
     try {
         // Create new user
         const hashedPassword = await bcrypt.hash(password, 15);
@@ -58,27 +58,27 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => { 
-    try { 
-        const user = await prisma.users.findUnique({ where: { email: req.body.email } }); 
-        if (!user) { 
-            return res.status(404).json({ message: 'User not found' }); 
-        } 
- 
-        // Generate a 4-digit reset code 
-        const resetCode = Math.floor(1000 + Math.random() * 9000).toString(); 
-        const hashedResetCode = crypto.createHash('sha256').update(resetCode).digest('hex'); 
-        const message = `Your reset code is ${resetCode}`; 
- 
-        await prisma.users.update({ 
-            where: { email: req.body.email }, 
-            data: { resetCode: hashedResetCode }, 
-        }); 
- 
-        await sendMail({ 
-            to: user.email, 
-            subject: 'Reset Password', 
-            text: message, 
+export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await prisma.users.findUnique({ where: { email: req.body.email } });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Generate a 4-digit reset code
+        const resetCode = Math.floor(1000 + Math.random() * 9000).toString();
+        const hashedResetCode = crypto.createHash('sha256').update(resetCode).digest('hex');
+        const message = `Your reset code is ${resetCode}`;
+
+        await prisma.users.update({
+            where: { email: req.body.email },
+            data: { resetCode: hashedResetCode },
+        });
+
+        await sendMail({
+            to: user.email,
+            subject: 'Reset Password',
+            text: message,
             html: `<p>Your password reset code is <strong>${resetCode}</strong></p>`
         }); 
         res.status(200).json({ message: 'Reset code sent successfully' }); 
@@ -104,6 +104,9 @@ export const verifyResetCode = async (req: Request, res: Response, next: NextFun
         const hashedResetCode = crypto.createHash('sha256').update(resetCode).digest('hex');
         if (hashedResetCode !== user.resetCode) {
             return res.status(400).json({ message: 'Wrong code' });
+        }
+        if (!process.env.JWT_SECRET_KEY) {
+            return res.status(500).json({ message: 'JWT_SECRET_KEY is not defined' });
         }
 
         if (!process.env.JWT_SECRET_KEY) {
@@ -141,3 +144,18 @@ export const googleAuth = async (req: Request, res: Response, next: NextFunction
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+export const updateProfile = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const id = parseInt(req.params.id);
+        const updated = await prisma.users.update({
+            where: { id },
+            data: req.body,
+        });
+        res.status(200).json({ message: 'Updated successfully', data: updated });
+    }
+    catch (error) {
+        console.error(`Error updating ${String(prisma.users)}:`, error);
+        next(error);
+    };
+}
