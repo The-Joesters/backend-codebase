@@ -67,8 +67,13 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
 
         // Generate a 4-digit reset code
         const resetCode = Math.floor(1000 + Math.random() * 9000).toString();
-        user.resetCode = crypto.createHash('sha256').update(resetCode).digest('hex');
+        const hashedResetCode = crypto.createHash('sha256').update(resetCode).digest('hex');
         const message = `Your reset code is ${resetCode}`;
+
+        await prisma.users.update({
+            where: { email: req.body.email },
+            data: { resetCode: hashedResetCode },
+        });
 
         await sendMail({
             to: user.email,
