@@ -2,7 +2,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import dotenv from 'dotenv';
 import { env } from 'process';
 dotenv.config();
-
+console.log(process.env.SWAGGER_LINK_PUBLIC);
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
