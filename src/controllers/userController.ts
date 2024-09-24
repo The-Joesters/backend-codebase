@@ -140,3 +140,18 @@ export const googleAuth = async (req: Request, res: Response, next: NextFunction
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+export const updateProfile = async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const id = parseInt(req.params.id);
+        const updated = await prisma.users.update({
+            where: { id },
+            data: req.body,
+        });
+        res.status(200).json({ message: 'Updated successfully', data: updated });
+    }
+    catch (error) {
+        console.error(`Error updating ${String(prisma.users)}:`, error);
+        next(error);
+    };
+}
