@@ -1,30 +1,32 @@
+
 /**
  * @swagger
- * /api/users/{id}:
- *   get:
- *     summary: Get a user by ID
+ * /api/users/forgot-password:
+ *   post:
+ *     summary: Request a password reset
  *     tags:
  *       - Users
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         description: ID of the user to retrieve
- *         schema:
- *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *             required:
+ *               - email
  *     responses:
  *       '200':
- *         description: User retrieved successfully
+ *         description: Reset code sent successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 id:
- *                   type: string
- *                 name:
- *                   type: string
- *                 email:
+ *                 message:
  *                   type: string
  *       '404':
  *         description: User not found
@@ -39,9 +41,9 @@
 
 /**
  * @swagger
- * /api/users/signup:
+ * /api/users/google:
  *   post:
- *     summary: Create a new user
+ *     summary: Authenticate a user via Google
  *     tags:
  *       - Users
  *     requestBody:
@@ -51,81 +53,13 @@
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
- *                 minLength: 2
- *                 maxLength: 50
- *               email:
- *                 type: string
- *                 format: email
- *               password:
- *                 type: string
- *                 minLength: 6
- *               confirmPassword:
+ *               token:
  *                 type: string
  *             required:
- *               - name
- *               - email
- *               - password
- *               - confirmPassword
+ *               - token
  *     responses:
- *       '201':
- *         description: User created successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 newUser:
- *                   type: object
- *                   properties:
- *                     name:
- *                       type: string
- *                     email:
- *                       type: string
- *                 token:
- *                   type: string
- *       '400':
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       msg:
- *                         type: string
- */
-
-/**
- * @swagger
- * /api/users/login:
- *   post:
- *     summary: Log in a user
- *     tags:
- *       - Users
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *               password:
- *                 type: string
- *             required:
- *               - email
- *               - password
- *     responses:
- *       '201':
- *         description: Login successful
+ *       '200':
+ *         description: User authenticated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -162,9 +96,9 @@
 
 /**
  * @swagger
- * /api/users/refresh-token:
+ * /api/users/reset-code:
  *   post:
- *     summary: Refresh user token
+ *     summary: Verify reset code
  *     tags:
  *       - Users
  *     requestBody:
@@ -174,22 +108,118 @@
  *           schema:
  *             type: object
  *             properties:
- *               refreshToken:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               resetCode:
  *                 type: string
  *             required:
- *               - refreshToken
+ *               - email
+ *               - resetCode
  *     responses:
  *       '200':
- *         description: Token refreshed successfully
+ *         description: Reset code verified successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 accessToken:
+ *                 message:
  *                   type: string
- *       '401':
- *         description: Invalid refresh token
+ *       '400':
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ */
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     summary: Update a user by ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 minLength: 2
+ *                 maxLength: 50
+ *               email:
+ *                 type: string
+ *                 format: email
+ *             required:
+ *               - name
+ *               - email
+ *     responses:
+ *       '200':
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '404':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Delete a user by ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       '404':
+ *         description: User not found
  *         content:
  *           application/json:
  *             schema:
