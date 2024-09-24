@@ -2,6 +2,12 @@
 
 This is the backend for the **Reading Sphere** application. Our main goal is to transform non-readers into regular readers.
 
+### Api-Documentation
+This is our Deployed VPS Api-Documentatoin , you can try it now!
+```link
+http://20.116.220.162:3001/api-docs/#/
+```
+
 ### Startup Guide
 
 1. Clone the repository:
