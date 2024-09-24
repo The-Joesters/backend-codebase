@@ -8,7 +8,7 @@ import { handleGoogleAuth } from '../utils/googleAuth';
 require('dotenv').config();
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, age, gender, preferedStreak, character_id } = req.body;
     try {
         // Create new user
         const hashedPassword = await bcrypt.hash(password, 15);
