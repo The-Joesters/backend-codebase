@@ -20,6 +20,6 @@ router.post('/users/forgot-password', forgotPassword);
 router.post('/users/reset-code', verifyResetCode);
 router.post('/users/google', googleAuth);
 router.put('/users/:id',checkAuth ,updateProfile);
-router.delete('/users/:id', deleteOne('users'));
+router.delete('/users/:id', checkAuth,deleteOne('users'));
 
 export default router;
