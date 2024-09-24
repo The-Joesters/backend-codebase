@@ -75,12 +75,53 @@
  *                 newUser:
  *                   type: object
  *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: The unique ID of the user
  *                     name:
  *                       type: string
  *                     email:
  *                       type: string
+ *                     password:
+ *                       type: string
+ *                       description: Hashed password of the user
+ *                     age:
+ *                       type: integer
+ *                       nullable: true
+ *                       description: Age of the user
+ *                     gender:
+ *                       type: string
+ *                       nullable: true
+ *                       description: Gender of the user
+ *                     streak_count:
+ *                       type: integer
+ *                       description: User's current streak count
+ *                     level:
+ *                       type: integer
+ *                       description: User's current level
+ *                     total_points:
+ *                       type: integer
+ *                       description: Total points accumulated by the user
+ *                     character_id:
+ *                       type: integer
+ *                       nullable: true
+ *                       description: ID of the character chosen by the user
+ *                     created_at:
+ *                       type: string
+ *                       format: date-time
+ *                       nullable: true
+ *                       description: Date and time when the user was created
+ *                     resetCode:
+ *                       type: string
+ *                       nullable: true
+ *                       description: Reset code for password recovery
+ *                     preferedStreak:
+ *                       type: string
+ *                       nullable: true
+ *                       description: Preferred streak type of the user
  *                 token:
  *                   type: string
+ *                   description: JWT token for user authentication
  *       '400':
  *         description: Bad request
  *         content:
@@ -333,3 +374,23 @@
  */
 
 
+	
+// Response body
+// {
+//   "newUser": {
+//     "id": 146,
+//     "name": "karim",
+//     "email": "karim@example.com",
+//     "password": "$2b$15$TeAGeQRW2UJhcbT7J43PtemKZQagqwbmoS8e9qJAjAHjeV7aqEqRa",
+//     "age": null,
+//     "gender": null,
+//     "streak_count": 0,
+//     "level": 1,
+//     "total_points": 0,
+//     "character_id": null,
+//     "created_at": null,
+//     "resetCode": null,
+//     "preferedStreak": null
+//   },
+//   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0NiwiaWF0IjoxNzI3MTI5Mjk4LCJleHAiOjE3MjcxMzI4OTh9.vnbiiLr0hdvgGHzYguHHHWXK2NO9AQ3DXuu5Elt-x3k"
+// }
