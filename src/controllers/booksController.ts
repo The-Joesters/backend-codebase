@@ -8,7 +8,7 @@ import prisma from '../prisma/prismaClient';
 
 export const getBooksInProgress = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        req.userId = req.userId || 70;// for test purposes
+        req.userId = req.userId || 142;// for test purposes
         const userId = req.userId;
         const Books = await booksService.GetBooksInProgress(userId!, 'inprogress');
         res.status(200).send({ "message": "Got Successfully", "data": Books });
@@ -20,7 +20,7 @@ export const getBooksInProgress = async (req: Request, res: Response, next: Next
 export const getBooksCompleted = async (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log("ia m here and this the error")
-        const userId = req.userId || 70; //for test purposes
+        const userId = req.userId || 142; //for test purposes
         const completedBooks = await booksService.GetBooksInProgress(userId!, 'completed');
         res.status(200).send({ "message": "Got Successfully", "data": completedBooks });
     } catch (error) {
@@ -29,7 +29,7 @@ export const getBooksCompleted = async (req: Request, res: Response, next: NextF
 }
 export const StartBookleById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        req.userId = req.userId||70;
+        req.userId = req.userId||142;
         const data: BookData = {};
         data.book_id = parseInt(req.params.book_id);
         data.user_id = req.userId;
@@ -54,7 +54,7 @@ export const StartBookleById = async (req: Request, res: Response, next: NextFun
 }
 export const FinishBook = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        req.userId = req.userId || 70;
+        req.userId = req.userId || 142;
         const data: BookData = {};
         data.book_id = parseInt(req.params.book_id);
         data.user_id = req.userId;
@@ -105,7 +105,7 @@ export const addBookCoverImage = async (req: Request, res: Response, next: NextF
 
 export const bookmarkBook = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.userId || 70;
+        const userId = req.userId || 142;
         const book_id = parseInt(req.params.book_id);
 
         const isExist = await prisma.books.findFirst({
@@ -127,7 +127,7 @@ export const bookmarkBook = async (req: Request, res: Response, next: NextFuncti
 }
 export const deleteBookmark = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.userId || 70;
+        const userId = req.userId || 142;
         const book_id = parseInt(req.params.bookId);
 
         const isExist = await prisma.books.findFirst({
@@ -153,7 +153,7 @@ export const getBookmarkedBooks = async (req: Request, res: Response, next: Next
 
     try {
 
-        const userId = req.userId || 70;
+        const userId = req.userId || 142;
         const data = await booksService.getBookMarked(userId);
         if (!data) {
             return next(new ApiError("there is no bookmarks yet!", 404));

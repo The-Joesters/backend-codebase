@@ -1,5 +1,6 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import dotenv from 'dotenv';
+import { env } from 'process';
 dotenv.config();
 
 const swaggerDefinition = {
@@ -11,7 +12,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'http://localhost:3001',
+      url: process.env.SWAGGER_LINK_PUBLIC,
       description: 'Local server',
     },
   ],
@@ -22,7 +23,13 @@ const swaggerDefinition = {
       bearerFormat: 'JWT',
     },
   },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
 };
+
 
 const options = {
   swaggerDefinition,

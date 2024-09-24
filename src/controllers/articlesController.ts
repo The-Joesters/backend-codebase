@@ -17,7 +17,7 @@ import articleReadingProgressService from '../services/articleReadingProgressSer
 export const UploadArticle = createOne('articles', async (req: Request, res: Response, next: NextFunction) => {
     try {
         req.body = req.body || {};
-        req.userId = 2;
+        req.userId = 142;
         console.log(req.body);
         console.log("this is the qurey", req.query);
         const link = `${req.query.link}`;
@@ -80,7 +80,7 @@ export const ValidateId = (req: Request, res: Response, next: NextFunction) => {
 
 export const StartArticleById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        req.userId = 2;
+        req.userId = 142;
         const data: ArticleData = {};
         data.article_id = parseInt(req.params.article_id);
         data.user_id = req.userId;
@@ -106,7 +106,7 @@ export const StartArticleById = async (req: Request, res: Response, next: NextFu
 
 export const FinishArticle = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        req.userId = 2;
+        req.userId = 142;
         const data: ArticleData = {};
         data.article_id = parseInt(req.params.article_id);
         data.user_id = req.userId;
@@ -131,7 +131,7 @@ export const FinishArticle = async (req: Request, res: Response, next: NextFunct
 
 export const getArtilesInProgress = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        req.userId = req.userId || 2;// for test purposes
+        req.userId = req.userId || 142;// for test purposes
         const userId = req.userId;
         const Articles = await articleReadingProgressService.articlesInProgress(userId!, 'inprogress');
         res.status(200).send({ "message": "Got Successfully", "data": Articles });
@@ -143,7 +143,7 @@ export const getArtilesInProgress = async (req: Request, res: Response, next: Ne
 export const getArticlesCompleted = async (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log("ia m here and this the error")
-        const userId = req.userId || 2; //for test purposes
+        const userId = req.userId || 142; //for test purposes
         const completedArticles = await articleReadingProgressService.articlesInProgress(userId!, 'completed');
         res.status(200).send({ "message": "Got Successfully", "data": completedArticles });
     } catch (error) {
@@ -154,7 +154,7 @@ export const getArticlesCompleted = async (req: Request, res: Response, next: Ne
 
 export const bookmarkArticle = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.userId || 2;
+        const userId = req.userId || 142;
         const article_id = parseInt(req.params.ArticleId);
 
         const isExist = await prisma.articles.findFirst({
@@ -176,7 +176,7 @@ export const bookmarkArticle = async (req: Request, res: Response, next: NextFun
 }
 export const deleteBookmark = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.userId || 2;
+        const userId = req.userId || 142;
         const article_id = parseInt(req.params.ArticleId);
 
         const isExist = await prisma.articles.findFirst({
@@ -202,7 +202,7 @@ export const getBookmarkedArticles = async (req: Request, res: Response, next: N
 
     try {
 
-        const userId = req.userId || 2;
+        const userId = req.userId || 142;
         const data = await articlesService.getBookMarked(userId);
         if (!data) {
             return next(new ApiError("there is no bookmarks yet!", 404));
