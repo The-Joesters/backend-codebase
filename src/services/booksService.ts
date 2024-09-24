@@ -62,6 +62,7 @@ class bookReadingProgressService {
                         select: {
                             id: true,
                             title: true,
+                            cover_image:true,
                             summary: true,
                         },
                     },
