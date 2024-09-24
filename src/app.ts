@@ -10,6 +10,7 @@ import ApiError from './middlewares/ApiError';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import booksRoute from './routes/booksRoutes';
+import itemsRoute from './routes/itemsRoute'
 export const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,7 +22,8 @@ app.use(morgan('dev'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', userRoutes);
 app.use('/api', articleRoute);
-app.use('/api',booksRoute)
+app.use('/api', booksRoute)
+app.use('/api,', itemsRoute);
 app.get('/submitt', async (req: Request, res: Response) => {
   res.send({"data":'Hello World'});
 });
