@@ -105,8 +105,12 @@ export const verifyResetCode = async (req: Request, res: Response, next: NextFun
         if (hashedResetCode !== user.resetCode) {
             return res.status(400).json({ message: 'Wrong code' });
         }
+        if (!process.env.JWT_SECRET_KEY) {
+            return res.status(500).json({ message: 'JWT_SECRET_KEY is not defined' });
+        }
+        const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
-        res.status(200).json({ message: 'Reset code verified successfully' });
+        res.status(200).json({ message: 'Reset code verified successfully' , accessToken});
     } catch (err) {
         console.error('Error verifying reset code:', err);
         res.status(500).json({ message: 'Server error' });
