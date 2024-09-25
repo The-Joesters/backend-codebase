@@ -10,8 +10,10 @@
   "author": "TheJoesters",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/text-to-speech": "^5.4.0",
     "@prisma/client": "^5.19.1",
     "@types/node": "^22.5.4",
+    "@types/pdf-parse": "^1.1.4",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -29,6 +31,7 @@
     "nodemailer": "^6.9.15",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "pdf-parse": "^1.1.1",
     "prisma": "^5.19.1",
     "puppeteer": "^23.4.0",
     "supertest": "^7.0.0",
