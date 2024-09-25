@@ -27,7 +27,7 @@ class Service {
             // console.log('File content:', fileContent);
 
             // Return the first 20 characters of the file content
-            return fileContent.slice(0, 50);
+            return fileContent;
         } catch (err) {
             console.error(err);
             throw new ApiError("Error while fetching from database ", 501);
