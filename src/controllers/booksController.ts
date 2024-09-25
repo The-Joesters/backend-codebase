@@ -1,10 +1,15 @@
+import fs from 'fs';
 import { Request, Response, NextFunction } from 'express';
+import pdfParse from 'pdf-parse'
 import ImageService from '../services/ImageService';
 import firebaseService from '../services/firebaseService';
 import booksService from '../services/booksService';
 import ApiError from '../middlewares/ApiError';
 import BookData from '../interfaces/BookData';
 import prisma from '../prisma/prismaClient';
+import AiService from '../services/AiService';
+import path from 'path';
+import audioService from '../services/audioService';
 
 export const getBooksInProgress = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -29,7 +34,7 @@ export const getBooksCompleted = async (req: Request, res: Response, next: NextF
 }
 export const StartBookleById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        req.userId = req.userId||142;
+        req.userId = req.userId || 142;
         const data: BookData = {};
         data.book_id = parseInt(req.params.book_id);
         data.user_id = req.userId;
@@ -76,12 +81,12 @@ export const FinishBook = async (req: Request, res: Response, next: NextFunction
     }
 
 }
-export const CreateBook=async (req: Request, res: Response, next: NextFunction) => {
-try {
-    
-} catch (error) {
-    
-}
+export const CreateBook = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+    } catch (error) {
+
+    }
 }
 
 export const addBookCoverImage = async (req: Request, res: Response, next: NextFunction) => {
@@ -163,6 +168,39 @@ export const getBookmarkedBooks = async (req: Request, res: Response, next: Next
         next(error);
     }
 }
+
+export const UploadPdf = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { file } = req;
+        console.log(req.body.file);
+        if (!file) {
+            throw new ApiError("No file uploaded", 400);
+        }
+
+        const filePath = path.resolve(__dirname, '../../pdfs', file.filename);
+
+        const pdfBuffer = fs.readFileSync(filePath);
+
+        const pdfData = await pdfParse(pdfBuffer);
+        const extractedText = pdfData.text;
+
+        const summarizedBook = await AiService.summarize(extractedText);
+        const createdSummarized = await booksService.summarize(summarizedBook);
+        if(!createdSummarized){
+            next(new ApiError("Error while summarize the book",500));
+        }
+        // const audiofile = await audioService.toAudio(createdSummarized?.summary!);
+        // const audioLink=await firebaseService.uploadImage(createdSummarized?.id!,audiofile.path,audiofile.name,"audio")
+        
+
+        res.status(200).send({ message: "Successfully processed and created", "data": createdSummarized, "shit": "this is " });
+    } catch (err) {
+        console.error(err);
+        next(new ApiError("Error while processing the PDF", 500));
+    }
+};
+
+
 
 export const ValidateId = (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;

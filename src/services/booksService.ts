@@ -152,6 +152,24 @@ class bookReadingProgressService {
             new ApiError("Error while checking on the bookmark from db", 500);
         }
     }
+    async summarize(File:any){
+        try {
+            
+            const created = await prisma.books.create({
+                data:{
+                    section_count:2,
+                    summary:File,
+                    title:"Book 1",
+                    audio_length:"78",
+                    audio_path:"https://ia600706.us.archive.org/25/items/aesop_fables_volume_three_librivox/fables_03_01_aesop_64kb.mp3"
+
+                }
+            })
+            return created
+        } catch (error) {
+            
+        }
+    }
     async isExist(book_id: number): Promise<boolean> {
         try {
             const book = await prisma.books.findFirst({
